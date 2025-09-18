@@ -1,4 +1,4 @@
-import React, { useState, useEffect, type JSX, type FC } from 'react';
+import React, { useState, useEffect, type FC } from 'react';
 import { Calendar, Clock, CheckCircle, XCircle, AlertCircle, ChevronRight, User, LogIn, LogOut, Activity, Power } from 'lucide-react';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
@@ -190,7 +190,7 @@ const TodayCard: React.FC<{ signIn?: AttendanceRecord; signOut?: AttendanceRecor
 
   return (
     <div className={isToday ? "bg-gray-900 rounded-lg border border-gray-800 p-6 mb-6" : "mt-6"}>
-      {isToday && <h2 className="text-lg font-semibold text-white mb-4">Today {today}</h2>}
+      {isToday && <h2 className="text-lg font-semibold text-white mb-8">Today {today}</h2>}
       <div className="flex gap-4 items-center justify-center">
         <div className={`flex items-center gap-2 px-4 py-2 rounded-lg border ${signIn ? 'bg-green-900/20 border-green-800' : 'bg-gray-800 border-gray-700'
           }`}>
@@ -279,7 +279,6 @@ export default function AttendanceTracker() {
   // Get today's date in the format used by the API
   const today = new Date().toISOString().split('T')[0];
   const [todaySignIn, todaySignOut] = getSignInOutDataForDate(today);
-  const historicalData = data;//data.filter(r => r.date !== today);
 
   if (loading) {
     return (
