@@ -106,7 +106,7 @@ const Modal: React.FC<{ isOpen: boolean; onClose: () => void; records: (Attendan
       <div className="bg-gray-900 rounded-lg max-w-2xl w-full max-h-[90vh] overflow-hidden border border-gray-800">
         <div className="p-6 border-b border-gray-800">
           <div className="flex justify-between items-start">
-            <div>
+            <div className="basis-[95%]">
               <h2 className="text-xl font-semibold text-white mb-2 text-left">Attendance Details</h2>
               <div className="flex gap-4 text-sm text-gray-400">
                 <span className="flex items-center gap-1">
@@ -132,7 +132,7 @@ const Modal: React.FC<{ isOpen: boolean; onClose: () => void; records: (Attendan
 
         <div className="p-6 space-y-4">
           <Tabs defaultValue="signIn" >
-            <TabsList>
+            <TabsList className='w-[300px]'>
               <TabsTrigger value="signIn">Sign In</TabsTrigger>
               <TabsTrigger value="signOut">Sign Out</TabsTrigger>
             </TabsList>
@@ -164,8 +164,7 @@ const Logger: FC<{ record?: AttendanceRecord }> = ({ record }) => {
     )}
 
     <div>
-      <h3 className="text-sm font-medium text-gray-400 mb-3 text-left">Process Log</h3>
-      <div className="space-y-2 max-h-[41vh] overflow-y-auto">
+      <div className="space-y-2 max-h-[41vh] overflow-y-auto mt-4">
         {record.log.map((entry, index) => (
           <div key={index} className="flex items-start gap-3 p-3 bg-gray-800/50 rounded-lg">
             <div className="mt-0.5">{getStepIcon(entry.msg)}</div>
@@ -191,7 +190,7 @@ const TodayCard: React.FC<{ signIn?: AttendanceRecord; signOut?: AttendanceRecor
   return (
     <div className={isToday ? "bg-gray-900 rounded-lg border border-gray-800 p-6 mb-6" : "mt-6"}>
       {isToday && <h2 className="text-lg font-semibold text-white mb-8">Today {today}</h2>}
-      <div className="flex gap-4 items-center justify-center">
+      <div className="flex gap-4 items-center justify-between">
         <div className={`flex items-center gap-2 px-4 py-2 rounded-lg border ${signIn ? 'bg-green-900/20 border-green-800' : 'bg-gray-800 border-gray-700'
           }`}>
           {signIn ? (
@@ -207,7 +206,7 @@ const TodayCard: React.FC<{ signIn?: AttendanceRecord; signOut?: AttendanceRecor
           </div>
         </div>
 
-        <div className="text-gray-600">- - - - - - - - - - - -</div>
+        <div className="text-gray-600 border-dashed border w-[5%] border-gray-500"></div>
 
         <div className={`flex items-center gap-2 px-4 py-2 rounded-lg border ${signOut ? 'bg-green-900/20 border-green-800' : 'bg-gray-800 border-gray-700'
           }`}>
