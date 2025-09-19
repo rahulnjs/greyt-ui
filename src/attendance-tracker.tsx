@@ -132,7 +132,7 @@ const Modal: React.FC<{ isOpen: boolean; onClose: () => void; records: (Attendan
 
         <div className="p-6 space-y-4">
           <Tabs defaultValue="signIn" >
-            <TabsList className='w-[300px]'>
+            <TabsList className='w-[220px]'>
               <TabsTrigger value="signIn">Sign In</TabsTrigger>
               <TabsTrigger value="signOut">Sign Out</TabsTrigger>
             </TabsList>
