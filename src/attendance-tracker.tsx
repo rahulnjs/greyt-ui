@@ -1,5 +1,5 @@
 import React, { useState, useEffect, type FC } from 'react';
-import { Calendar, Clock, CheckCircle, XCircle, AlertCircle, ChevronRight, User, LogIn, LogOut, Activity, Power } from 'lucide-react';
+import { Calendar, Clock, CheckCircle, XCircle, AlertCircle, ChevronRight, User, LogIn, LogOut, Activity, Power, Settings, CircleMinus } from 'lucide-react';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { findStatus, getDuration } from './util/util';
@@ -107,7 +107,7 @@ const Modal: React.FC<{ isOpen: boolean; onClose: () => void; records: (Attendan
         <div className="p-6 border-b border-gray-800">
           <div className="flex justify-between items-start">
             <div className="basis-[95%]">
-              <h2 className="text-xl font-semibold text-white mb-2 text-left">Attendance Details</h2>
+              <h2 className="text-xl font-semibold text-white mb-2 text-left">Automation details</h2>
               <div className="flex gap-4 text-sm text-gray-400">
                 <span className="flex items-center gap-1">
                   <Calendar className="w-4 h-4" />
@@ -304,7 +304,10 @@ export default function AttendanceTracker() {
   return (
     <div className="min-h-screen bg-[#151b25] p-4">
       <div className="max-w-6xl mx-auto">
-        <h1 className="text-2xl font-bold text-white mb-6">Attendance Tracker</h1>
+        <h1 className="text-2xl font-bold text-white mb-6 text-left root-font flex justify-between items-center mr-1">
+          <span>greyt.io</span>
+          <Settings className="text-stone-400" />
+        </h1>
 
         {(todaySignIn || todaySignOut) && (
           <TodayCard signIn={todaySignIn} signOut={todaySignOut} />
@@ -339,41 +342,45 @@ export default function AttendanceTracker() {
                     const all_duration = [signInRecord?.duration, signOutRecord?.duration];
 
                     const meta = {
-                      date: String(signInRecord?.date ?? signOutRecord?.date),
+                      date: String(signInRecord?.date ?? signOutRecord?.date ?? records[0].date),
                       status: findStatus(all_status),
-                      duration: getDuration(all_duration)
+                      duration: getDuration(all_duration),
+                      isHoliday: records.find(r => r.log.find(s => s.msg.indexOf("holiday/weekend") >= 0)) !== undefined,
                     }
 
                     return (
                       <tr
                         key={`${meta.date}-record`}
                         className="border-b border-gray-800 hover:bg-gray-800/50 cursor-pointer transition-colors"
-                        onClick={() => handleRowClick(meta.date)}
+                        onClick={() => !meta.isHoliday && handleRowClick(meta.date)}
                       >
-                        <td className="p-4 text-white text-left">{formatDate(meta.date)}</td>
-                        <td className="p-4 text-left">
-                          {signInRecord ? (
-                            <CheckCircle className="w-5 h-5 text-green-500" />
-                          ) : (
-                            <span className="text-gray-500">-</span>
-                          )}
-                        </td>
-                        <td className="p-4 text-left">
-                          {signOutRecord ? (
-                            <CheckCircle className="w-5 h-5 text-orange-500" />
-                          ) : (
-                            <span className="text-gray-500">-</span>
-                          )}
-                        </td>
-                        <td className="p-4 text-white text-left">
-                          {meta.duration}
-                        </td>
-                        <td className={`p-4 ${getStatusColor(meta.status)} text-left`}>
-                          <span className="flex items-center gap-1">
-                            {getStatusIcon(meta.status)}
-                            {meta.status || '-'}
-                          </span>
-                        </td>
+                        {!meta.isHoliday && <>
+                          <td className="p-4 text-white text-left">{formatDate(meta.date)}</td>
+                          <td className="p-4 text-left">
+                            {signInRecord ? (
+                              <CheckCircle className="w-5 h-5 text-green-500" />
+                            ) : (
+                              <span className="text-gray-500">-</span>
+                            )}
+                          </td>
+                          <td className="p-4 text-left">
+                            {signOutRecord ? (
+                              <CheckCircle className="w-5 h-5 text-orange-500" />
+                            ) : (
+                              <span className="text-gray-500">-</span>
+                            )}
+                          </td>
+                          <td className="p-4 text-white text-left">
+                            {meta.duration}
+                          </td>
+                          <td className={`p-4 ${getStatusColor(meta.status)} text-left`}>
+                            <span className="flex items-center gap-1">
+                              {getStatusIcon(meta.status)}
+                              {meta.status || '-'}
+                            </span>
+                          </td>
+                        </>}
+                        {meta.isHoliday && <td className="p-4 text-center text-[#393939] bg-[#000]" colSpan={5}> <div className="flex justify-center gap-2"><CircleMinus className="w-[16px]" /> Skipped due to holiday/weekend on {meta.date}</div></td>}
                       </tr>
                     );
                   })
