@@ -315,7 +315,7 @@ export default function AttendanceTracker() {
       if (!response.ok) throw new Error("Failed to fetch data");
       const result: AttendanceRecord[] = await response.json();
       const _d: { [key: string]: AttendanceRecord[] } = {};
-      for (let i = result.length - 1; i >= 0; i--) {
+      for (let i = 0; i < result.length; i++) {
         const r = result[i];
         if (!_d[r.date]) {
           _d[r.date] = [];
